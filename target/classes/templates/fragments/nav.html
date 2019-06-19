@@ -35,7 +35,7 @@
                                     <a class="nav-link" href="/users/form">Register</a>
                                 </li>
                                 <li th:if="${session.user}" class="nav-item">
-                                    <a class="nav-link" href="/questions">Questions</a>
+                                    <a class="nav-link" th:href="@{'/questions?pageNo=1'}">Questions</a>
                                 </li>
                                 <li th:if="${session.user}" class="nav-item">
                                		<a class="nav-link" th:href="@{'/users/{id}'(id=${session.user.id})}" >

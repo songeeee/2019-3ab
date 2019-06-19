@@ -6,10 +6,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import iducs.springboot.board.domain.Answer;
+import iducs.springboot.board.domain.Comment;
 import iducs.springboot.board.domain.Question;
 import iducs.springboot.board.domain.User;
 import iducs.springboot.board.entity.AnswerEntity;
@@ -28,10 +30,10 @@ public class QuestionServiceImpl implements QuestionService {
 		
 		Question question = entity.buildDomain();
 		
-		List<Answer> answerList = new ArrayList<Answer>();
+		List<Comment> answerList = new ArrayList<Comment>();
 		for(AnswerEntity answerEntity : entity.getAnswers())
 			answerList.add(answerEntity.buildDomain());
-		question.setAnswers(answerList);
+		question.setComment(answerList);
 		
 		return question;
 	}
@@ -51,6 +53,18 @@ public class QuestionServiceImpl implements QuestionService {
 		}
 		return questions;			
 	}
+	
+	@Override
+	public List<Question> getQuestions(Long pageNo) {
+		PageRequest pageRequest = PageRequest.of((int) (pageNo - 1), 3, new Sort(Sort.Direction.DESC, "id"));
+		Page<QuestionEntity> entities = repository.findAll(pageRequest);
+		List<Question> questions = new ArrayList<Question>();
+		for(QuestionEntity entity : entities) {
+			Question question = entity.buildDomain();
+			questions.add(question);
+		}
+		return questions;
+	}	
 
 	@Override
 	public List<Question> getQuestionsByUser(String name) {

@@ -29,31 +29,28 @@
       <div class="container">
          <div class="row">
             <div class="col-lg-8 posts-list">
+            <form th:action="@{'/questions/{id}'(id=${question.id})}" th:method="put" th:object="${question}">
                <div class="single-post">
                   <div class="blog_details">
-                     <h2>제목 : <span th:text="${question.title}"></span></h2>
+                     <h2>제목 : <input type="text" th:value="${question.title}" name="title"></h2>
                      <ul class="blog-info-link mt-3 mb-4">
                      	<li><a href="#"><i class="far fa-user"></i> <span th:text="${question.writer.userId}"></span></a></li>
                         <li><a href="#"><i class="far fa-clock"></i> <span th:text="${#temporals.format(question.createTime, 'yyyy년 MM월 dd일 HH:mm')}"></span></a></li>
                         <li><a href="#comment-area"><i class="far fa-comments"></i> 03 Comments</a></li>
                      </ul>
-                     <div class="quote-wrapper">
-                        <div class="quotes" th:text="${question.contents}">
-                           
+                     <div class="mt-10">
+                        <div class="quotes" >
+                           <input type="text" th:value="${question.contents}" name="contents" class="single-input"></input>
                         </div>
                      </div>
-                     <p>
-                        MCSE boot camps have its supporters and its detractors. Some people do not understand why you
-                        should have to spend money on boot camp when you can get the MCSE study materials yourself at a
-                        fraction of the camp price. However, who has the willpower to actually sit through a
-                        self-imposed MCSE training. who has the willpower to actually
-                     </p>
                   </div>
                </div>
+               <div class="col-sm-4 text-center">
+               		<button type="submit" class="button button-contactForm btn_4">update</button>
+               </div>
+             </form>
                <div class="navigation-top">
                   <div class="d-sm-flex justify-content-between text-center">
-                     <p class="like-info"><span class="align-middle"><i class="far fa-heart"></i></span> Lily and 4
-                        people like this</p>
                      <div class="col-sm-4 text-center my-2 my-sm-0">
                         <!-- <p class="comment-count"><span class="align-middle"><i class="far fa-comment"></i></span> 06 Comments</p> -->
                      </div>
@@ -106,62 +103,7 @@
                         </div>
                      </div>
                   </div>
-               </div>
-               <div class="blog-author">
-                  <div class="media align-items-center">
-                     <img src="/img/blog/author.png" alt="">
-                     <div class="media-body">
-                        <a href="#">
-                           <h4>Harvard milan</h4>
-                        </a>
-                        <p>Second divided from form fish beast made. Every of seas all gathered use saying you're, he
-                           our dominion twon Second divided from</p>
-                     </div>
-                  </div>
-               </div>
-               <div class="comments-area">
-                  <h4><a name="comment-area"></a>05 Comments</h4>
-                  <div class="comment-list" th:each="answer : ${question.answers}">
-                     <div class="single-comment justify-content-between d-flex">
-                        <div class="user justify-content-between d-flex">
-                           <div class="thumb">
-                              <img src="/img/comment/comment_1.png" alt="">
-                           </div>
-                           <div class="desc">
-                              <p class="comment">
-                                 <span th:text="${answer.contents}"></span>
-                              </p>
-                              <div class="d-flex justify-content-between">
-                                 <div class="d-flex align-items-center">
-                                    <h5>
-                                       <a href="#"><span th:text="${answer.writer.userId}"></span></a>
-                                    </h5>
-                                    <p class="date"><span th:text="${#temporals.format(answer.createTime, 'yy년 MM월 dd일 HH:mm')}"></span></p>
-                                 </div>
-                                 <div class="reply-btn">
-                                    <a href="#" class="btn-reply text-uppercase">reply</a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>                  
-               </div>
-               <div class="comment-form">
-                  <h4>Leave a Reply</h4>
-                  <form class="form-contact comment_form" th:action="@{'/questions/{id}/answers'(id=${question.id})}" method="post" id="commentForm">
-                     <div class="row">
-                        <div class="col-12">
-                           <div class="form-group">
-                              <textarea class="form-control w-100" name="contents" id="contents" cols="30" rows="5"
-                                 placeholder="Write Comment"></textarea>
-                           </div>
-                        </div>                        
-                     </div>
-                     <div class="form-group">
-                        <button type="submit" class="button button-contactForm">REPLY</button>
-                     </div>
-                  </form>
+               
                </div>
             </div>
             <div class="col-lg-4">

@@ -51,6 +51,8 @@
                                     <li><a href="#"><i class="far fa-user"></i> <span th:text="${question.writer.userId}"></span></a></li>
                                     <li><a href="#"><i class="far fa-clock"></i> <span th:text="${#temporals.format(question.createTime, 'YY-MM-dd HH:mm')}"></span></a></li>
                                     <li><a href="#"><i class="far fa-comments"></i> 03 Comments</a></li>
+                                    <li><a th:href="@{'/questions/{id}/form'(id=${question.id})}"><i class="far fa-comments"></i> update</a></li>
+                                    <li><a th:href="@{'/questions/{id}/delete'(id=${question.id})}" th:method="delete"><i class="far fa-comments"></i> delete</a></li>
                                 </ul>
                             </div>
                         </article>
@@ -62,11 +64,8 @@
                                         <i class="ti-angle-left"></i>
                                     </a>
                                 </li>
-                                <li class="page-item">
-                                    <a href="#" class="page-link">1</a>
-                                </li>
-                                <li class="page-item active">
-                                    <a href="#" class="page-link">2</a>
+                                <li class="page-item" th:each="pageNo : ${pageNo}">
+                                    <a th:href="@{'/questions?pageNo={pageNo}'(pageNo=${pageNo})}" class="page-link"><span th:text="${pageNo}"></span></a>
                                 </li>
                                 <li class="page-item">
                                     <a href="#" class="page-link" aria-label="Next">

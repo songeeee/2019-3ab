@@ -11,7 +11,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import iducs.springboot.board.domain.Answer;
+import iducs.springboot.board.domain.Comment;
 
 @Entity
 @Table (name="answer")
@@ -32,8 +32,8 @@ public class AnswerEntity {
 	private String contents;
 	private LocalDateTime createTime;
 	
-	public Answer buildDomain() {
-		Answer answer = new Answer();
+	public Comment buildDomain() {
+		Comment answer = new Comment();
 		answer.setId(id);
 		answer.setWriter(writer.buildDomain());
 		answer.setQuestion(question.buildDomain());
@@ -41,7 +41,7 @@ public class AnswerEntity {
 		answer.setCreateTime(createTime);
 		return answer;
 	}
-	public void buildEntity(Answer answer) {
+	public void buildEntity(Comment answer) {
 		id = answer.getId();
 
 		UserEntity userEntity = new UserEntity();

@@ -19,13 +19,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import iducs.springboot.board.domain.Answer;
+import iducs.springboot.board.domain.Comment;
 import iducs.springboot.board.domain.Question;
 import iducs.springboot.board.domain.User;
 import iducs.springboot.board.exception.ResourceNotFoundException;
 import iducs.springboot.board.repository.UserRepository;
 import iducs.springboot.board.service.QuestionService;
 import iducs.springboot.board.service.UserService;
+import iducs.springboot.board.utils.HttpSessionUtils;
 
 @Controller
 @RequestMapping("/questions")
@@ -33,9 +34,12 @@ public class QuerstionController {
 	@Autowired QuestionService questionService; // 의존성 주입(Dependency Injection) : 
 	
 	@GetMapping("")
-	public String getAllUser(Model model, HttpSession session) {
+	public String getAllUser(Model model, HttpSession session, Long pageNo) {
+		if(HttpSessionUtils.isEmpty(session, "user")) {
+			return "redirect:/users/login-form";
+		}
 		List<Question> questions = questionService.getQuestions();
-		model.addAttribute("questions", questions);
+		model.addAttribute("questions", questionService.getQuestions(pageNo));
 		return "/questions/list"; 
 	}	
 	
@@ -52,10 +56,10 @@ public class QuerstionController {
 	@GetMapping("/{id}")
 	public String getQuestionById(@PathVariable(value = "id") Long id, Model model) {
 		Question question = questionService.getQuestionById(id);
-		for(Answer answer : question.getAnswers())
+		for(Comment answer : question.getComment())
 			System.out.println(answer.getContents());
 		model.addAttribute("question", question);
-		return "/questions/info";
+		return "/questions/edit2";
 	}
 	@GetMapping("/{id}/form")
 	public String getUpdateForm(@PathVariable(value = "id") Long id, Model model) {
@@ -64,12 +68,15 @@ public class QuerstionController {
 		return "/questions/info";
 	}
 	@PutMapping("/{id}")
-	public String updateQuestionById(@PathVariable(value = "id") Long id, String title, String contents, Model model) {
+	public String updateQuestionById(@PathVariable(value = "id") Long id, @Valid Question formQuestion, Model model) {
 		Question question = questionService.getQuestionById(id);
-		questionService.updateQuestion(question);		
+		question.setTitle(formQuestion.getTitle());
+		question.setContents(formQuestion.getContents());
+		questionService.updateQuestion(question);
+		model.addAttribute("question", question);
 		return "redirect:/questions/" + id;
 	}
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{id}/delete")
 	public String deleteQuestionById(@PathVariable(value = "id") Long id, Model model) {
 		Question question = questionService.getQuestionById(id);
 		questionService.deleteQuestion(question);

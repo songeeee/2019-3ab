@@ -26,10 +26,10 @@ public class HomeController {
 	@GetMapping("/initdb") 
 	public String initialize() {
 		for(int i = 1;i <= 10; i++)
-			userService.saveUser(new User("u" + i, "p" + i, "name" + i, "contact" + i));	
+			userService.saveUser(new User("a" + i, "p" + i, "name" + i, "contact" + i));	
 		for(int i = 1;i <= 5; i++) {
 			for(int j = 1; j <= 2; j++)
-			questionService.saveQuestion(new Question("제목 " + j, userService.getUserByUserId("u"+i) , "내용 " + j));
+			questionService.saveQuestion(new Question("제목 " + j, userService.getUserByUserId("a"+i) , "내용 " + j));
 		}
 		return "index";
 	}
